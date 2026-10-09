@@ -17,14 +17,14 @@
 ### **Project Setup, Dashboard, Integration & Deployment**
 
 ### Files Responsible For:
-- [`manage.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/manage.py) — Django entry point
-- [`lms/settings.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/lms/settings.py) — Project configuration
-- [`lms/urls.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/lms/urls.py) — Root URL routing
-- [`templates/base.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/base.html) — Base layout template
-- [`templates/library/dashboard.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/dashboard.html) — Dashboard template
-- [`static/css/style.css`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/static/css/style.css) — Global stylesheet
-- [`library/management/commands/seed_data.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/management/commands/seed_data.py) — Sample data loader
-- [`.gitignore`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/.gitignore), [`requirements.txt`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/requirements.txt), [`README.md`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/README.md) — Project documentation
+- [`manage.py`](manage.py) — Django entry point
+- [`lms/settings.py`](lms/settings.py) — Project configuration
+- [`lms/urls.py`](lms/urls.py) — Root URL routing
+- [`templates/base.html`](templates/base.html) — Base layout template
+- [`templates/library/dashboard.html`](templates/library/dashboard.html) — Dashboard template
+- [`static/css/style.css`](static/css/style.css) — Global stylesheet
+- [`library/management/commands/seed_data.py`](library/management/commands/seed_data.py) — Sample data loader
+- [`.gitignore`](.gitignore), [`requirements.txt`](requirements.txt), [`README.md`](README.md) — Project documentation
 
 ### What I Did (Explanation for Viva):
 
@@ -73,12 +73,12 @@
 ### **User Authentication Module (SRS §3.1)**
 
 ### Files Responsible For:
-- [`library/models.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/models.py) — `UserProfile` model (lines 14–31)
-- [`library/forms.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/forms.py) — `LoginForm`, `RegisterForm` (lines 13–55)
-- [`library/views.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/views.py) — `login_view()`, `register_view()`, `logout_view()`, helper functions (lines 24–85)
-- [`library/urls.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/urls.py) — Auth URL patterns (lines 6–8)
-- [`templates/library/login.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/login.html) — Login page
-- [`templates/library/register.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/register.html) — Registration page
+- [`library/models.py`](library/models.py) — `UserProfile` model (lines 14–31)
+- [`library/forms.py`](library/forms.py) — `LoginForm`, `RegisterForm` (lines 13–55)
+- [`library/views.py`](library/views.py) — `login_view()`, `register_view()`, `logout_view()`, helper functions (lines 24–85)
+- [`library/urls.py`](library/urls.py) — Auth URL patterns (lines 6–8)
+- [`templates/library/login.html`](templates/library/login.html) — Login page
+- [`templates/library/register.html`](templates/library/register.html) — Registration page
 
 ### What I Did (Explanation for Viva):
 
@@ -129,13 +129,13 @@ class UserProfile(models.Model):
 ### **Book Management & Category Module (SRS §3.2, §3.6)**
 
 ### Files Responsible For:
-- [`library/models.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/models.py) — `Category` model (lines 34–43), `Book` model (lines 46–76)
-- [`library/forms.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/forms.py) — `BookForm`, `CategoryForm` (lines 59–89, 137–142)
-- [`library/views.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/views.py) — `book_list()`, `book_add()`, `book_edit()`, `book_delete()`, `category_list()`, `category_delete()` (lines 95–167, 310–340)
-- [`templates/library/book_list.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/book_list.html) — Book catalog page
-- [`templates/library/book_form.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/book_form.html) — Add/Edit book form
-- [`templates/library/category_list.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/category_list.html) — Category management page
-- [`templates/library/confirm_delete.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/confirm_delete.html) — Delete confirmation (shared)
+- [`library/models.py`](library/models.py) — `Category` model (lines 34–43), `Book` model (lines 46–76)
+- [`library/forms.py`](library/forms.py) — `BookForm`, `CategoryForm` (lines 59–89, 137–142)
+- [`library/views.py`](library/views.py) — `book_list()`, `book_add()`, `book_edit()`, `book_delete()`, `category_list()`, `category_delete()` (lines 95–167, 310–340)
+- [`templates/library/book_list.html`](templates/library/book_list.html) — Book catalog page
+- [`templates/library/book_form.html`](templates/library/book_form.html) — Add/Edit book form
+- [`templates/library/category_list.html`](templates/library/category_list.html) — Category management page
+- [`templates/library/confirm_delete.html`](templates/library/confirm_delete.html) — Delete confirmation (shared)
 
 ### What I Did (Explanation for Viva):
 
@@ -194,12 +194,12 @@ def book_list(request):
 ### **Member Management Module (SRS §3.3)**
 
 ### Files Responsible For:
-- [`library/models.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/models.py) — `Member` model (lines 79–130)
-- [`library/forms.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/forms.py) — `MemberForm` (lines 93–105)
-- [`library/views.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/views.py) — `member_list()`, `member_add()`, `member_edit()`, `member_delete()`, `member_detail()` (lines 170–235)
-- [`templates/library/member_list.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/member_list.html) — Member list page
-- [`templates/library/member_form.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/member_form.html) — Add/Edit member form
-- [`templates/library/member_detail.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/member_detail.html) — Member profile page
+- [`library/models.py`](library/models.py) — `Member` model (lines 79–130)
+- [`library/forms.py`](library/forms.py) — `MemberForm` (lines 93–105)
+- [`library/views.py`](library/views.py) — `member_list()`, `member_add()`, `member_edit()`, `member_delete()`, `member_detail()` (lines 170–235)
+- [`templates/library/member_list.html`](templates/library/member_list.html) — Member list page
+- [`templates/library/member_form.html`](templates/library/member_form.html) — Add/Edit member form
+- [`templates/library/member_detail.html`](templates/library/member_detail.html) — Member profile page
 
 ### What I Did (Explanation for Viva):
 
@@ -258,13 +258,13 @@ def can_borrow(self):
 ### **Book Issue & Return Module (SRS §3.4)**
 
 ### Files Responsible For:
-- [`library/models.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/models.py) — `Transaction` model (lines 133–174)
-- [`library/forms.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/forms.py) — `IssueBookForm`, `ReturnBookForm` (lines 109–132)
-- [`library/views.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/views.py) — `issue_list()`, `issue_book()`, `return_book()`, `transaction_history()` (lines 238–290)
-- [`templates/library/issue_list.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/issue_list.html) — Active issues page
-- [`templates/library/issue_form.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/issue_form.html) — Issue book form
-- [`templates/library/return_form.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/return_form.html) — Return book form
-- [`templates/library/transaction_history.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/transaction_history.html) — Full history page
+- [`library/models.py`](library/models.py) — `Transaction` model (lines 133–174)
+- [`library/forms.py`](library/forms.py) — `IssueBookForm`, `ReturnBookForm` (lines 109–132)
+- [`library/views.py`](library/views.py) — `issue_list()`, `issue_book()`, `return_book()`, `transaction_history()` (lines 238–290)
+- [`templates/library/issue_list.html`](templates/library/issue_list.html) — Active issues page
+- [`templates/library/issue_form.html`](templates/library/issue_form.html) — Issue book form
+- [`templates/library/return_form.html`](templates/library/return_form.html) — Return book form
+- [`templates/library/transaction_history.html`](templates/library/transaction_history.html) — Full history page
 
 ### What I Did (Explanation for Viva):
 
@@ -332,16 +332,16 @@ def issue_book(request):
 ### **Fine Management & Reports Module (SRS §3.5, §3.7)**
 
 ### Files Responsible For:
-- [`library/models.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/models.py) — `Fine` model (lines 177–195)
-- [`library/forms.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/forms.py) — `PayFineForm` (lines 135–141)
-- [`library/views.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/views.py) — `fine_list()`, `fine_pay()`, `reports()`, `report_overdue()`, `report_popular()`, `report_member_activity()` (lines 293–345)
-- [`templates/library/fine_list.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/fine_list.html) — Fine management page
-- [`templates/library/fine_pay.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/fine_pay.html) — Fine payment page
-- [`templates/library/reports.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/reports.html) — Reports dashboard
-- [`templates/library/report_overdue.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/report_overdue.html) — Overdue report
-- [`templates/library/report_popular.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/report_popular.html) — Popular books report
-- [`templates/library/report_members.html`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/templates/library/report_members.html) — Member activity report
-- [`library/admin.py`](file:///Users/aryanqbz/.gemini/antigravity-ide/scratch/library_management_system_v2/library/admin.py) — Django admin registration for all models
+- [`library/models.py`](library/models.py) — `Fine` model (lines 177–195)
+- [`library/forms.py`](library/forms.py) — `PayFineForm` (lines 135–141)
+- [`library/views.py`](library/views.py) — `fine_list()`, `fine_pay()`, `reports()`, `report_overdue()`, `report_popular()`, `report_member_activity()` (lines 293–345)
+- [`templates/library/fine_list.html`](templates/library/fine_list.html) — Fine management page
+- [`templates/library/fine_pay.html`](templates/library/fine_pay.html) — Fine payment page
+- [`templates/library/reports.html`](templates/library/reports.html) — Reports dashboard
+- [`templates/library/report_overdue.html`](templates/library/report_overdue.html) — Overdue report
+- [`templates/library/report_popular.html`](templates/library/report_popular.html) — Popular books report
+- [`templates/library/report_members.html`](templates/library/report_members.html) — Member activity report
+- [`library/admin.py`](library/admin.py) — Django admin registration for all models
 
 ### What I Did (Explanation for Viva):
 
