@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Popular Books — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>🏆 Most Popular Books</h2>
+        <p>Top 10 most borrowed books</p>
+    </div>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Back to Reports</a>
+</div>
+
+<div class="card">
+    {% if popular %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Book ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Times Issued</th>
+                    <th>Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in popular %}
+                <tr>
+                    <td><strong>{{ forloop.counter }}</strong></td>
+                    <td>{{ book.book_id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{% if book.category %}<span class="badge badge-neutral">{{ book.category.name }}</span>{% else %}—{% endif %}</td>
+                    <td><span class="badge badge-warning">{{ book.issue_count }} issues</span></td>
+                    <td>{{ book.available_qty }} / {{ book.total_qty }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><p>No data available yet.</p></div>
+    {% endif %}
+</div>
+{% endblock %}

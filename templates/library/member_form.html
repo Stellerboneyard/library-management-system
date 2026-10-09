@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Member — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>👤 {{ action }} Member</h2>
+        <p>{% if action == 'Register' %}Register a new library member{% else %}Update member details{% endif %}</p>
+    </div>
+    <a href="{% url 'member_list' %}" class="btn btn-secondary">← Back to Members</a>
+</div>
+
+<div class="card form-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">💾 {{ action }} Member</button>
+            <a href="{% url 'member_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

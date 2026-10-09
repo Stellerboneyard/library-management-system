@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Overdue Report — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>⚠️ Overdue Books Report</h2>
+        <p>All currently overdue and unreturned books</p>
+    </div>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Back to Reports</a>
+</div>
+
+<div class="card">
+    {% if overdue %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Type</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Days Overdue</th>
+                    <th>Fine (₹)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in overdue %}
+                <tr>
+                    <td><strong>{{ txn.transaction_id }}</strong></td>
+                    <td>{{ txn.book.title }}</td>
+                    <td>{{ txn.member.name }}</td>
+                    <td><span class="badge badge-{{ txn.member.member_type }}">{{ txn.member.get_member_type_display }}</span></td>
+                    <td>{{ txn.issue_date|date:"d-m-Y" }}</td>
+                    <td>{{ txn.due_date|date:"d-m-Y" }}</td>
+                    <td><span class="badge badge-danger">{{ txn.days_overdue }} days</span></td>
+                    <td><strong style="color:var(--accent-red);">₹{{ txn.fine_amount }}</strong></td>
+                    <td><a href="{% url 'return_book' txn.pk %}" class="btn btn-sm btn-success">↩ Return</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">✅</div>
+        <p>No overdue books! All good.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

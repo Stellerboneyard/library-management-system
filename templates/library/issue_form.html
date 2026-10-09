@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Issue Book — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>📤 Issue a Book</h2>
+        <p>Assign a book to a registered member</p>
+    </div>
+    <a href="{% url 'issue_list' %}" class="btn btn-secondary">← Back to Issues</a>
+</div>
+
+<div class="card form-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error" style="margin-bottom:1rem;">
+            ❌ {% for error in form.non_field_errors %}{{ error }}<br>{% endfor %}
+        </div>
+        {% endif %}
+
+        <div style="background:var(--bg-glass); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.85rem; margin-bottom:1.25rem; font-size:0.82rem; color:var(--text-secondary);">
+            ℹ️ Borrowing period: <strong>Students: 14 days</strong> · <strong>Faculty: 30 days</strong><br>
+            Limits: Students max 3 books · Faculty max 5 books · Blocked if fines > ₹100
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">📤 Issue Book</button>
+            <a href="{% url 'issue_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

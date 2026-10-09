@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Return Book — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>↩ Return Book</h2>
+        <p>Process return for {{ txn.transaction_id }}</p>
+    </div>
+    <a href="{% url 'issue_list' %}" class="btn btn-secondary">← Back to Issues</a>
+</div>
+
+<div class="card form-card">
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">Transaction ID</span>
+            <span class="detail-value">{{ txn.transaction_id }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Book</span>
+            <span class="detail-value">{{ txn.book.title }} ({{ txn.book.book_id }})</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Member</span>
+            <span class="detail-value">{{ txn.member.name }} ({{ txn.member.member_id }})</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Type</span>
+            <span class="detail-value">{{ txn.member.get_member_type_display }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Issue Date</span>
+            <span class="detail-value">{{ txn.issue_date|date:"d-m-Y" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Due Date</span>
+            <span class="detail-value">{{ txn.due_date|date:"d-m-Y" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Status</span>
+            <span class="detail-value">
+                {% if txn.is_overdue %}
+                <span class="badge badge-danger">⚠ Overdue by {{ txn.days_overdue }} day{{ txn.days_overdue|pluralize }}</span>
+                {% else %}
+                <span class="badge badge-success">✓ On Time</span>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    {% if txn.is_overdue %}
+    <div class="alert alert-warning" style="margin-bottom:1.25rem;">
+        ⚠️ This book is <strong>{{ txn.days_overdue }} day{{ txn.days_overdue|pluralize }}</strong> overdue.
+        Fine: <strong>₹{{ txn.fine_amount }}</strong> (@ ₹2/day)
+    </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success">✅ Confirm Return</button>
+            <a href="{% url 'issue_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

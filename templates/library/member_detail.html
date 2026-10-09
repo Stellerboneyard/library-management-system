@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}{{ member.name }} — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>👤 Member Profile</h2>
+        <p>{{ member.member_id }}</p>
+    </div>
+    <div class="btn-group">
+        <a href="{% url 'member_edit' member.pk %}" class="btn btn-secondary">✏️ Edit</a>
+        <a href="{% url 'member_list' %}" class="btn btn-secondary">← Back</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="member-header">
+        <div class="member-avatar">{{ member.name|make_list|first|upper }}</div>
+        <div>
+            <h3>{{ member.name }}</h3>
+            <p style="color:var(--text-secondary); font-size:0.85rem;">
+                {% if member.member_type == 'faculty' %}
+                <span class="badge badge-faculty">Faculty</span>
+                {% else %}
+                <span class="badge badge-student">Student</span>
+                {% endif %}
+                &nbsp;·&nbsp; {{ member.department }}
+                &nbsp;·&nbsp;
+                {% if member.status == 'active' %}
+                <span class="badge badge-success">Active</span>
+                {% else %}
+                <span class="badge badge-danger">Inactive</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">Library Card</span>
+            <span class="detail-value">{{ member.member_id }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value">{{ member.phone }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">{{ member.email|default:"—" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Member Since</span>
+            <span class="detail-value">{{ member.joined_date|date:"d-m-Y" }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Active Issues</span>
+            <span class="detail-value">{{ active_count }} / {{ member.borrow_limit }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Unpaid Fines</span>
+            <span class="detail-value" {% if total_fines > 0 %}style="color:var(--accent-red);"{% endif %}>₹{{ total_fines }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Borrowing History -->
+<div class="card">
+    <div class="card-header">
+        <h3>📋 Borrowing History</h3>
+    </div>
+    {% if transactions %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Book</th>
+                    <th>Issued</th>
+                    <th>Due</th>
+                    <th>Returned</th>
+                    <th>Status</th>
+                    <th>Fine</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in transactions %}
+                <tr>
+                    <td><strong>{{ txn.transaction_id }}</strong></td>
+                    <td>{{ txn.book.title }}</td>
+                    <td>{{ txn.issue_date|date:"d-m-Y" }}</td>
+                    <td>{{ txn.due_date|date:"d-m-Y" }}</td>
+                    <td>{% if txn.return_date %}{{ txn.return_date|date:"d-m-Y" }}{% else %}<span style="color:var(--text-muted);">—</span>{% endif %}</td>
+                    <td>
+                        {% if txn.returned %}
+                        <span class="badge badge-info">Returned</span>
+                        {% elif txn.is_overdue %}
+                        <span class="badge badge-danger">⚠ Overdue</span>
+                        {% else %}
+                        <span class="badge badge-success">✓ Active</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if txn.fine_amount > 0 %}
+                        <strong style="color:var(--accent-amber);">₹{{ txn.fine_amount }}</strong>
+                        {% else %}
+                        <span style="color:var(--text-muted);">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><p>No borrowing history.</p></div>
+    {% endif %}
+</div>
+{% endblock %}

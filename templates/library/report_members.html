@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Member Activity — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>👥 Member Activity Report</h2>
+        <p>Borrowing activity across all members</p>
+    </div>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Back to Reports</a>
+</div>
+
+<div class="card">
+    {% if members %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Card No.</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Department</th>
+                    <th>Total Issues</th>
+                    <th>Active Issues</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in members %}
+                <tr>
+                    <td><strong>{{ m.member_id }}</strong></td>
+                    <td><a href="{% url 'member_detail' m.pk %}">{{ m.name }}</a></td>
+                    <td><span class="badge badge-{{ m.member_type }}">{{ m.get_member_type_display }}</span></td>
+                    <td>{{ m.department }}</td>
+                    <td><span class="badge badge-neutral">{{ m.total_issues }}</span></td>
+                    <td>
+                        {% if m.active_issues > 0 %}
+                        <span class="badge badge-info">{{ m.active_issues }}</span>
+                        {% else %}
+                        <span style="color:var(--text-muted);">0</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.status == 'active' %}
+                        <span class="badge badge-success">Active</span>
+                        {% else %}
+                        <span class="badge badge-danger">Inactive</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state"><p>No members registered yet.</p></div>
+    {% endif %}
+</div>
+{% endblock %}

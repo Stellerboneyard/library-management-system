@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Library Management System — Arya College of Engineering & IT">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="app-wrapper">
+
+    <!-- ─── Sidebar ─── -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h1>📚 LibraryMS</h1>
+            <p>Management System</p>
+        </div>
+
+        <nav class="nav-section">
+            <div class="nav-label">Overview</div>
+            <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <span class="icon">🏠</span> Dashboard
+            </a>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-label">Catalog</div>
+            <a href="{% url 'book_list' %}" class="nav-link {% if 'book' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="icon">📖</span> Books
+            </a>
+            <a href="{% url 'category_list' %}" class="nav-link {% if 'category' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="icon">🏷️</span> Categories
+            </a>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-label">People</div>
+            <a href="{% url 'member_list' %}" class="nav-link {% if 'member' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="icon">👥</span> Members
+            </a>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-label">Transactions</div>
+            <a href="{% url 'issue_list' %}" class="nav-link {% if request.resolver_match.url_name == 'issue_list' or request.resolver_match.url_name == 'issue_book' %}active{% endif %}">
+                <span class="icon">📤</span> Issue / Return
+            </a>
+            <a href="{% url 'transaction_history' %}" class="nav-link {% if request.resolver_match.url_name == 'transaction_history' %}active{% endif %}">
+                <span class="icon">📋</span> History
+            </a>
+            <a href="{% url 'fine_list' %}" class="nav-link {% if 'fine' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="icon">💰</span> Fines
+            </a>
+        </nav>
+
+        <nav class="nav-section">
+            <div class="nav-label">Analytics</div>
+            <a href="{% url 'reports' %}" class="nav-link {% if 'report' in request.resolver_match.url_name %}active{% endif %}">
+                <span class="icon">📊</span> Reports
+            </a>
+        </nav>
+
+        <!-- User Info -->
+        <div class="sidebar-user">
+            <div class="avatar">{{ request.user.first_name|default:request.user.username|make_list|first|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                <div class="user-role">{% if request.user.profile %}{{ request.user.profile.get_role_display }}{% endif %}</div>
+            </div>
+            <a href="{% url 'logout' %}" class="btn btn-sm btn-secondary" title="Logout">🚪</a>
+        </div>
+
+        <div class="sidebar-footer">
+            <p>Arya College of Engg. & IT<br>CSE — Software Engineering Lab<br>Session 2025–26</p>
+        </div>
+    </aside>
+
+    <!-- ─── Main ─── -->
+    <main class="main-content">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }}">
+                {% if message.tags == 'success' %}✅{% elif message.tags == 'warning' %}⚠️{% elif message.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+</body>
+</html>

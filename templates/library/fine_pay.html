@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Collect Fine — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>💵 Collect Fine</h2>
+        <p>Record fine payment for {{ fine.fine_id }}</p>
+    </div>
+    <a href="{% url 'fine_list' %}" class="btn btn-secondary">← Back to Fines</a>
+</div>
+
+<div class="card fine-card">
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span class="detail-label">Fine ID</span>
+            <span class="detail-value">{{ fine.fine_id }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Member</span>
+            <span class="detail-value">{{ fine.transaction.member.name }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Book</span>
+            <span class="detail-value">{{ fine.transaction.book.title }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Days Overdue</span>
+            <span class="detail-value">{{ fine.transaction.days_overdue }} days</span>
+        </div>
+    </div>
+
+    <div class="fine-amount">₹{{ fine.amount }}</div>
+    <p style="text-align:center; color:var(--text-secondary); font-size:0.82rem; margin-bottom:1.5rem;">
+        @ ₹2 per overdue day
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group" style="display:flex; align-items:center; gap:0.5rem;">
+            {{ field }}
+            <label for="{{ field.id_for_label }}" style="text-transform:none; letter-spacing:0; font-size:0.85rem;">{{ field.label }}</label>
+        </div>
+        {% endfor %}
+        <div class="btn-group" style="justify-content:center; margin-top:1rem;">
+            <button type="submit" class="btn btn-success btn-lg">💵 Confirm Payment</button>
+            <a href="{% url 'fine_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

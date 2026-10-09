@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Book — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>📖 {{ action }} Book</h2>
+        <p>{% if action == 'Add' %}Add a new book to the catalog{% else %}Update book details{% endif %}</p>
+    </div>
+    <a href="{% url 'book_list' %}" class="btn btn-secondary">← Back to Books</a>
+</div>
+
+<div class="card form-card">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <ul class="errorlist">
+                {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-error" style="margin-bottom:1rem;">
+            {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">💾 {{ action }} Book</button>
+            <a href="{% url 'book_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

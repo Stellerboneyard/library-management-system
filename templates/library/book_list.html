@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Books — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>📖 Book Catalog</h2>
+        <p>Browse, search and manage library books</p>
+    </div>
+    <a href="{% url 'book_add' %}" class="btn btn-primary">+ Add Book</a>
+</div>
+
+<!-- Search & Filter -->
+<form method="get" class="search-filter-bar">
+    <input type="text" name="q" class="form-input" placeholder="Search by title, author, ISBN, publisher…" value="{{ query }}">
+    <select name="cat" class="form-input">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if cat_filter == cat.id|stringformat:"d" %}selected{% endif %}>{{ cat.name }}</option>
+        {% endfor %}
+    </select>
+    <select name="avail" class="form-input">
+        <option value="">All Status</option>
+        <option value="yes" {% if avail_filter == 'yes' %}selected{% endif %}>Available</option>
+        <option value="no" {% if avail_filter == 'no' %}selected{% endif %}>All Issued</option>
+    </select>
+    <button type="submit" class="btn btn-secondary">🔍 Search</button>
+    {% if query or cat_filter or avail_filter %}
+    <a href="{% url 'book_list' %}" class="btn btn-secondary">✕ Clear</a>
+    {% endif %}
+</form>
+
+<div class="card">
+    {% if books %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Category</th>
+                    <th>Total</th>
+                    <th>Available</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td><strong>{{ book.book_id }}</strong></td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td style="font-size:0.78rem; color:var(--text-muted);">{{ book.isbn|default:"—" }}</td>
+                    <td>
+                        {% if book.category %}
+                        <span class="badge badge-neutral">{{ book.category.name }}</span>
+                        {% else %}
+                        <span style="color:var(--text-muted);">—</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ book.total_qty }}</td>
+                    <td>{{ book.available_qty }}</td>
+                    <td>
+                        {% if book.available_qty > 0 %}
+                            <span class="badge badge-success">Available</span>
+                        {% else %}
+                            <span class="badge badge-danger">All Issued</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{% url 'book_edit' book.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="{% url 'book_delete' book.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">📖</div>
+        {% if query %}
+        <p>No books matching "{{ query }}" found.</p>
+        {% else %}
+        <p>No books in the catalog yet.</p>
+        {% endif %}
+        <a href="{% url 'book_add' %}" class="btn btn-primary">+ Add First Book</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

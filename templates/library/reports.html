@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Reports — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>📊 Reports</h2>
+        <p>Generate and view library reports</p>
+    </div>
+</div>
+
+<div class="report-grid">
+    <a href="{% url 'report_overdue' %}" class="report-card" style="text-decoration:none; color:inherit;">
+        <div class="report-icon">⚠️</div>
+        <h3>Overdue Books Report</h3>
+        <p>View all currently overdue books with member details and fine amounts.</p>
+        <span class="btn btn-sm btn-danger">View Report →</span>
+    </a>
+
+    <a href="{% url 'report_popular' %}" class="report-card" style="text-decoration:none; color:inherit;">
+        <div class="report-icon">🏆</div>
+        <h3>Most Popular Books</h3>
+        <p>Top 10 most borrowed books ranked by total issue count.</p>
+        <span class="btn btn-sm btn-warning">View Report →</span>
+    </a>
+
+    <a href="{% url 'report_members' %}" class="report-card" style="text-decoration:none; color:inherit;">
+        <div class="report-icon">👥</div>
+        <h3>Member Activity</h3>
+        <p>Member borrowing activity — total issues, active issues, and engagement.</p>
+        <span class="btn btn-sm btn-success">View Report →</span>
+    </a>
+
+    <a href="{% url 'transaction_history' %}" class="report-card" style="text-decoration:none; color:inherit;">
+        <div class="report-icon">📋</div>
+        <h3>Transaction History</h3>
+        <p>Complete chronological log of all issue and return transactions.</p>
+        <span class="btn btn-sm btn-secondary">View Report →</span>
+    </a>
+
+    <a href="{% url 'fine_list' %}" class="report-card" style="text-decoration:none; color:inherit;">
+        <div class="report-icon">💰</div>
+        <h3>Fine Collection Report</h3>
+        <p>Summary of all fines — paid and unpaid — with collection details.</p>
+        <span class="btn btn-sm btn-secondary">View Report →</span>
+    </a>
+</div>
+{% endblock %}

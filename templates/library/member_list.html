@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Members — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>👥 Members</h2>
+        <p>Registered library members</p>
+    </div>
+    <a href="{% url 'member_add' %}" class="btn btn-primary">+ Register Member</a>
+</div>
+
+<form method="get" class="search-filter-bar">
+    <input type="text" name="q" class="form-input" placeholder="Search by name, ID, department, email…" value="{{ query }}">
+    <select name="type" class="form-input">
+        <option value="">All Types</option>
+        <option value="student" {% if type_filter == 'student' %}selected{% endif %}>Student</option>
+        <option value="faculty" {% if type_filter == 'faculty' %}selected{% endif %}>Faculty</option>
+    </select>
+    <button type="submit" class="btn btn-secondary">🔍 Search</button>
+    {% if query or type_filter %}<a href="{% url 'member_list' %}" class="btn btn-secondary">✕ Clear</a>{% endif %}
+</form>
+
+<div class="card">
+    {% if members %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Card No.</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Department</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Active Issues</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td><strong>{{ member.member_id }}</strong></td>
+                    <td><a href="{% url 'member_detail' member.pk %}">{{ member.name }}</a></td>
+                    <td>
+                        {% if member.member_type == 'faculty' %}
+                        <span class="badge badge-faculty">Faculty</span>
+                        {% else %}
+                        <span class="badge badge-student">Student</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ member.department }}</td>
+                    <td>{{ member.phone }}</td>
+                    <td>
+                        {% if member.status == 'active' %}
+                        <span class="badge badge-success">Active</span>
+                        {% else %}
+                        <span class="badge badge-danger">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% with count=member.active_issues_count %}
+                        {% if count >= member.borrow_limit %}
+                        <span class="badge badge-warning">{{ count }}/{{ member.borrow_limit }}</span>
+                        {% elif count > 0 %}
+                        <span class="badge badge-info">{{ count }}/{{ member.borrow_limit }}</span>
+                        {% else %}
+                        <span class="badge badge-neutral">0/{{ member.borrow_limit }}</span>
+                        {% endif %}
+                        {% endwith %}
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{% url 'member_detail' member.pk %}" class="btn btn-sm btn-secondary">View</a>
+                            <a href="{% url 'member_edit' member.pk %}" class="btn btn-sm btn-secondary">Edit</a>
+                            <a href="{% url 'member_delete' member.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">👥</div>
+        {% if query %}<p>No members matching "{{ query }}".</p>{% else %}<p>No members registered yet.</p>{% endif %}
+        <a href="{% url 'member_add' %}" class="btn btn-primary">+ Register First Member</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

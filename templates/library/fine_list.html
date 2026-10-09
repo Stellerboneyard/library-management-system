@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Fines — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>💰 Fine Management</h2>
+        <p>Overdue fines — collect and track payments</p>
+    </div>
+</div>
+
+<!-- Fine Stats -->
+<div class="stats-grid" style="grid-template-columns: repeat(2, 1fr); max-width:400px; margin-bottom:1.5rem;">
+    <div class="stat-card">
+        <span class="stat-icon">🔴</span>
+        <div class="stat-value">₹{{ total_unpaid }}</div>
+        <div class="stat-label">Unpaid Fines</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🟢</span>
+        <div class="stat-value">₹{{ total_collected }}</div>
+        <div class="stat-label">Collected</div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="search-filter-bar">
+    <a href="{% url 'fine_list' %}" class="btn {% if not status_filter %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">All</a>
+    <a href="{% url 'fine_list' %}?status=unpaid" class="btn {% if status_filter == 'unpaid' %}btn-danger{% else %}btn-secondary{% endif %} btn-sm">🔴 Unpaid</a>
+    <a href="{% url 'fine_list' %}?status=paid" class="btn {% if status_filter == 'paid' %}btn-success{% else %}btn-secondary{% endif %} btn-sm">🟢 Paid</a>
+</div>
+
+<div class="card">
+    {% if fines %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Fine ID</th>
+                    <th>Member</th>
+                    <th>Book</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Paid Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fine in fines %}
+                <tr>
+                    <td><strong>{{ fine.fine_id }}</strong></td>
+                    <td>{{ fine.transaction.member.name }}</td>
+                    <td>{{ fine.transaction.book.title }}</td>
+                    <td><strong style="color:var(--accent-amber);">₹{{ fine.amount }}</strong></td>
+                    <td>
+                        {% if fine.paid %}
+                        <span class="badge badge-success">✓ Paid</span>
+                        {% else %}
+                        <span class="badge badge-danger">Unpaid</span>
+                        {% endif %}
+                    </td>
+                    <td>{% if fine.paid_date %}{{ fine.paid_date|date:"d-m-Y" }}{% else %}<span style="color:var(--text-muted);">—</span>{% endif %}</td>
+                    <td>
+                        {% if not fine.paid %}
+                        <a href="{% url 'fine_pay' fine.pk %}" class="btn btn-sm btn-success">💵 Collect</a>
+                        {% else %}
+                        <span style="color:var(--text-muted);">—</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">💰</div>
+        <p>No fine records found.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

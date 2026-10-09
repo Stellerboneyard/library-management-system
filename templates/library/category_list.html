@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Categories — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>🏷️ Book Categories</h2>
+        <p>Manage book categories and genres</p>
+    </div>
+</div>
+
+<!-- Add Category Form -->
+<div class="card form-card" style="margin-bottom:1.5rem;">
+    <div class="card-header"><h3>+ Add Category</h3></div>
+    <form method="post" style="display:flex; gap:0.75rem; align-items:flex-end;">
+        {% csrf_token %}
+        <div class="form-group" style="flex:1; margin-bottom:0;">
+            <label for="id_name">Name</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+            <ul class="errorlist">{% for e in form.name.errors %}<li>{{ e }}</li>{% endfor %}</ul>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary" style="height:fit-content;">+ Add</button>
+    </form>
+</div>
+
+<div class="card">
+    {% if categories %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Books</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in categories %}
+                <tr>
+                    <td><strong>{{ cat.name }}</strong></td>
+                    <td><span class="badge badge-neutral">{{ cat.book_count }} books</span></td>
+                    <td>
+                        <a href="{% url 'category_delete' cat.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">🏷️</div>
+        <p>No categories created yet. Add one above.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

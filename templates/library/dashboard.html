@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — LibraryMS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Dashboard</h2>
+        <p>Library overview at a glance</p>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-icon">📖</span>
+        <div class="stat-value">{{ total_books }}</div>
+        <div class="stat-label">Total Books</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">👥</span>
+        <div class="stat-value">{{ total_members }}</div>
+        <div class="stat-label">Active Members</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">📤</span>
+        <div class="stat-value">{{ active_issues }}</div>
+        <div class="stat-label">Books Issued</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">⚠️</span>
+        <div class="stat-value">{{ overdue_count }}</div>
+        <div class="stat-label">Overdue</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">🏷️</span>
+        <div class="stat-value">{{ total_categories }}</div>
+        <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-card">
+        <span class="stat-icon">💰</span>
+        <div class="stat-value">₹{{ unpaid_fines_total }}</div>
+        <div class="stat-label">Unpaid Fines</div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card">
+    <div class="card-header">
+        <h3>Quick Actions</h3>
+    </div>
+    <div class="btn-group">
+        <a href="{% url 'book_add' %}" class="btn btn-primary">📖 Add Book</a>
+        <a href="{% url 'member_add' %}" class="btn btn-success">👤 Register Member</a>
+        <a href="{% url 'issue_book' %}" class="btn btn-warning">📤 Issue Book</a>
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">🔍 Search Catalog</a>
+        <a href="{% url 'reports' %}" class="btn btn-secondary">📊 Reports</a>
+    </div>
+</div>
+
+<!-- Overdue Alert -->
+{% if overdue_issues %}
+<div class="card">
+    <div class="card-header">
+        <h3>⚠️ Overdue Books</h3>
+        <a href="{% url 'report_overdue' %}" class="btn btn-sm btn-danger">View All →</a>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Due Date</th>
+                    <th>Days Overdue</th>
+                    <th>Fine</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in overdue_issues %}
+                <tr>
+                    <td>{{ txn.book.title }}</td>
+                    <td>{{ txn.member.name }}</td>
+                    <td>{{ txn.due_date|date:"d-m-Y" }}</td>
+                    <td><span class="badge badge-danger">{{ txn.days_overdue }} days</span></td>
+                    <td><strong style="color: var(--accent-red);">₹{{ txn.fine_amount }}</strong></td>
+                    <td><a href="{% url 'return_book' txn.pk %}" class="btn btn-sm btn-success">↩ Return</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- Recent Issues -->
+<div class="card">
+    <div class="card-header">
+        <h3>Recent Issues</h3>
+        <a href="{% url 'issue_list' %}" class="btn btn-sm btn-secondary">View All →</a>
+    </div>
+    {% if recent_transactions %}
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for txn in recent_transactions %}
+                <tr>
+                    <td><strong>{{ txn.transaction_id }}</strong></td>
+                    <td>{{ txn.book.title }}</td>
+                    <td>{{ txn.member.name }}</td>
+                    <td>{{ txn.due_date|date:"d-m-Y" }}</td>
+                    <td>
+                        {% if txn.is_overdue %}
+                            <span class="badge badge-danger">⚠ Overdue</span>
+                        {% else %}
+                            <span class="badge badge-success">✓ Active</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No books currently issued.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
